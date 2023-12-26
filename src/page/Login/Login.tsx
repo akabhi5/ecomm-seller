@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
+import { http } from "../../api-client";
 
 type Inputs = {
   email: string;
@@ -6,9 +7,14 @@ type Inputs = {
 };
 
 const Login = () => {
-  const { register, handleSubmit, watch } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    http
+      .post("/user/seller/login/", data)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="max-w-lg mx-auto ">
