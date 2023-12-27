@@ -45,7 +45,7 @@ const Login = () => {
             </div>
             <input
               type="email"
-              placeholder="Password"
+              placeholder="Email"
               className="input input-bordered w-full"
               {...register("email", { required: true })}
             />
