@@ -17,7 +17,9 @@ const NavBar = () => {
 
   return (
     <nav className="flex justify-between items-center h-20 shadow-md p-4">
-      <div className="text-3xl font-bold">Ecomm Seller</div>
+      <Link to="/" className="text-3xl font-bold">
+        Ecomm Seller
+      </Link>
 
       <div className="flex space-x-4 text-lg">
         {isLoggedIn ? (
