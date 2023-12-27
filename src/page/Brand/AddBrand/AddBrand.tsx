@@ -92,7 +92,10 @@ const AddBrand = () => {
         </label>
 
         <div className="mt-4">
-          <button className="btn btn-neutral text-lg">Submit</button>
+          <button className="btn btn-neutral text-lg">
+            {isPending && <span className="loading loading-spinner"></span>}
+            Submit
+          </button>
         </div>
       </form>
     </div>
