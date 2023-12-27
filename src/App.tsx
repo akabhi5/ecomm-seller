@@ -4,6 +4,7 @@ import Home from "./page/Home/Home";
 import NoPage from "./page/NoPage/NoPage";
 import Login from "./page/Login/Login";
 import Register from "./page/Register/Register";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      <Toaster />
     </div>
   );
 }

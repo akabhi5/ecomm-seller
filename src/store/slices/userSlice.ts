@@ -1,11 +1,14 @@
 import { User } from "./../../../types/user";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { getAllAuthCookies } from "../../cookie";
+
+const { name, email, token } = getAllAuthCookies();
 
 const initialState: User = {
-  name: "",
-  email: "",
-  token: "",
+  name: name,
+  email: email,
+  token: token,
 };
 
 export const userSlice = createSlice({

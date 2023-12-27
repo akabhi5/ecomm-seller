@@ -1,5 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { http } from "../../api-client";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/slices/userSlice";
+import { setAuthCookies } from "../../cookie";
+import { useNavigate } from "react-router-dom";
 
 type Inputs = {
   email: string;
@@ -8,12 +13,26 @@ type Inputs = {
 
 const Login = () => {
   const { register, handleSubmit } = useForm<Inputs>();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     http
       .post("/user/seller/login/", data)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err));
+      .then((res) => {
+        dispatch(setUser(res.data));
+        setAuthCookies(res.data.name, res.data.email, res.data.token);
+        navigate("/");
+        toast.success("Logged in!", {
+          position: "bottom-right",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Some error occurred. Please try again!", {
+          position: "bottom-right",
+        });
+      });
   };
 
   return (
