@@ -6,20 +6,23 @@ import Login from "./page/Login/Login";
 import Register from "./page/Register/Register";
 import { Toaster } from "react-hot-toast";
 import AddBrand from "./page/Brand/AddBrand/AddBrand";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
+        <Layout>
+          <Routes>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="brands/add" element={<AddBrand />} />
+            <Route element={<ProtectedRoute />}>
+              <Route index element={<Home />} />
+              <Route path="brands/add" element={<AddBrand />} />
+            </Route>
             <Route path="*" element={<NoPage />} />
-          </Route>
-        </Routes>
+          </Routes>
+        </Layout>
       </BrowserRouter>
       <Toaster />
     </div>

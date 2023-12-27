@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { http } from "../../api-client";
+import { httpNoAuth } from "../../api-client";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slices/userSlice";
@@ -17,7 +17,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    http
+    httpNoAuth
       .post("/user/seller/login/", data)
       .then((res) => {
         dispatch(setUser(res.data));
