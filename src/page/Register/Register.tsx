@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { http } from "../../api-client";
+import { httpNoAuth } from "../../api-client";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -16,7 +16,7 @@ const Register = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     if (data.password === data.password2) {
-      http
+      httpNoAuth
         .post("/user/register/", {
           name: data.name,
           email: data.email,
