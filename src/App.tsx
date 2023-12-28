@@ -7,6 +7,7 @@ import Register from "./page/Register/Register";
 import { Toaster } from "react-hot-toast";
 import AddBrand from "./page/Brand/AddBrand/AddBrand";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import AddProduct from "./page/Product/AddProduct/AddProduct";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route index element={<Home />} />
               <Route path="brands/add" element={<AddBrand />} />
+              <Route path="products/add" element={<AddProduct />} />
             </Route>
             <Route path="*" element={<NoPage />} />
           </Routes>

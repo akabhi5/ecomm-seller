@@ -4,7 +4,7 @@ import { Brand } from "../../../types/Brand";
 
 const BrandList = () => {
   const { isPending, data: brands } = useQuery({
-    queryKey: ["dashboard-brands"],
+    queryKey: ["seller-brands"],
     queryFn: () => http.get("/brands/"),
   });
 
