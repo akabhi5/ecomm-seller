@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { http } from "../../../api-client";
 import { Product } from "../../../types/Product";
+import { queryStaleTime } from "../../../utils";
 
 const ProductList = () => {
   const { isPending, data: categories } = useQuery({
-    queryKey: ["dashboard-products"],
+    queryKey: ["seller-products"],
     queryFn: () => http.get("/products/"),
+    staleTime: queryStaleTime,
   });
 
   if (isPending) {

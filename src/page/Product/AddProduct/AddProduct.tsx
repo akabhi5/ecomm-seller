@@ -1,11 +1,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { http, httpNoAuth } from "../../../api-client";
 import { AxiosResponse } from "axios";
 import { Category } from "../../../types/Category";
 import { Brand } from "../../../types/Brand";
+import { queryStaleTime } from "../../../utils";
 
 type Inputs = {
   name: string;
@@ -28,15 +29,18 @@ function createArrayOfObjects(urlsString: string): { url: string }[] {
 const AddProduct = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { data: categories } = useQuery({
     queryKey: ["product-categories"],
     queryFn: () => httpNoAuth.get("/products/category/"),
+    staleTime: queryStaleTime,
   });
 
   const { data: brands } = useQuery({
     queryKey: ["seller-brands"],
     queryFn: () => http.get("/brands/"),
+    staleTime: queryStaleTime,
   });
 
   const { mutate: addNewProduct, isPending } = useMutation<
@@ -58,6 +62,7 @@ const AddProduct = () => {
       return http.post("/products/", product);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["seller-products"] });
       toast.success("Product added!", {
         position: "bottom-right",
       });

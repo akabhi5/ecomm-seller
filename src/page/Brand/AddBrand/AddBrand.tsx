@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { http } from "../../../api-client";
 import { AxiosResponse } from "axios";
 
@@ -15,6 +15,7 @@ type Inputs = {
 const AddBrand = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const { mutate: addNewBrand, isPending } = useMutation<
     AxiosResponse,
@@ -27,7 +28,7 @@ const AddBrand = () => {
     },
     onSuccess: () => {
       // Invalidate and refetch
-      //   queryClient.invalidateQueries({ queryKey: ['todos'] })
+      queryClient.invalidateQueries({ queryKey: ["seller-brands"] });
       toast.success("Brand added!", {
         position: "bottom-right",
       });

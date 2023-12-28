@@ -3,15 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "../../store/store";
 import { logout } from "../../store/slices/userSlice";
 import { clearAuthCookies } from "../../cookie";
+import { useQueryClient } from "@tanstack/react-query";
 
 const NavBar = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const onLogout = () => {
     dispatch(logout());
     navigate("/login");
+    queryClient.invalidateQueries();
     clearAuthCookies();
   };
 

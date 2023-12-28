@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { http } from "../../../api-client";
 import { Brand } from "../../../types/Brand";
+import { queryStaleTime } from "../../../utils";
 
 const BrandList = () => {
   const { isPending, data: brands } = useQuery({
     queryKey: ["seller-brands"],
     queryFn: () => http.get("/brands/"),
+    staleTime: queryStaleTime,
   });
 
   if (isPending) {
