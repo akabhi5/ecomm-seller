@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { httpNoAuth } from "../../api-client";
+import { httpNoAuth, setHttpToken } from "../../api-client";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slices/userSlice";
@@ -22,6 +22,7 @@ const Login = () => {
       .then((res) => {
         dispatch(setUser(res.data));
         setAuthCookies(res.data.name, res.data.email, res.data.token);
+        setHttpToken(res.data.token);
         navigate("/");
         toast.success("Logged in!", {
           position: "bottom-right",

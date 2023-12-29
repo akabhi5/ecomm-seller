@@ -9,8 +9,12 @@ export const http = axios.create({
   },
 });
 
-const token = getCookie("token");
-http.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+export const setHttpToken = (token: string | null = null) => {
+  const authToken = token || getCookie("token");
+  http.defaults.headers.common["Authorization"] = `Bearer ${authToken}`;
+};
+
+setHttpToken();
 
 export const httpNoAuth = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
