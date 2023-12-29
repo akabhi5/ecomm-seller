@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../store/slices/userSlice";
 import { setAuthCookies } from "../../cookie";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
 type Inputs = {
   email: string;
@@ -16,24 +18,33 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    httpNoAuth
-      .post("/user/seller/login/", data)
-      .then((res) => {
-        dispatch(setUser(res.data));
-        setAuthCookies(res.data.name, res.data.email, res.data.token);
-        setHttpToken(res.data.token);
-        navigate("/");
-        toast.success("Logged in!", {
-          position: "bottom-right",
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Some error occurred. Please try again!", {
-          position: "bottom-right",
-        });
+  const { mutate: loginUser, isPending } = useMutation<
+    AxiosResponse,
+    Error,
+    Inputs,
+    unknown
+  >({
+    mutationFn: (data) => {
+      return httpNoAuth.post("/user/seller/login/", data);
+    },
+    onSuccess: (res) => {
+      dispatch(setUser(res.data));
+      setAuthCookies(res.data.name, res.data.email, res.data.token);
+      setHttpToken(res.data.token);
+      navigate("/");
+      toast.success("Logged in!", {
+        position: "bottom-right",
       });
+    },
+    onError: () => {
+      toast.error("Some error occurred. Please try again!", {
+        position: "bottom-right",
+      });
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    loginUser(data);
   };
 
   return (
@@ -63,7 +74,10 @@ const Login = () => {
             />
           </label>
           <div className="mt-4">
-            <button className="btn btn-neutral text-lg">Login</button>
+            <button className="btn btn-neutral text-lg">
+              {isPending && <span className="loading loading-spinner"></span>}
+              Login
+            </button>
           </div>
         </form>
       </div>
