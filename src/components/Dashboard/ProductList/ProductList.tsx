@@ -20,7 +20,7 @@ const ProductList = () => {
 
   return (
     <div>
-      <div className="text-xl">Products</div>
+      <div className="text-xl underline">Products</div>
       <div>
         <ul>
           {categories?.data.map((product: Product) => (

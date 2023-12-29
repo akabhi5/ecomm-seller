@@ -4,6 +4,7 @@ import { RootState } from "../../store/store";
 import { logout } from "../../store/slices/userSlice";
 import { clearAuthCookies } from "../../cookie";
 import { useQueryClient } from "@tanstack/react-query";
+import { setHttpToken } from "../../api-client";
 
 const NavBar = () => {
   const isLoggedIn = useSelector((state: RootState) => state.user.token);
@@ -12,10 +13,11 @@ const NavBar = () => {
   const queryClient = useQueryClient();
 
   const onLogout = () => {
+    clearAuthCookies();
     dispatch(logout());
     navigate("/login");
-    queryClient.invalidateQueries();
-    clearAuthCookies();
+    queryClient.removeQueries();
+    setHttpToken(); // since cookies are already clear it will be set to null
   };
 
   return (

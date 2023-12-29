@@ -20,7 +20,7 @@ const BrandList = () => {
 
   return (
     <div>
-      <div className="text-xl">Brands</div>
+      <div className="text-xl underline">Brands</div>
       <div>
         <ul>
           {brands?.data.map((brand: Brand) => (

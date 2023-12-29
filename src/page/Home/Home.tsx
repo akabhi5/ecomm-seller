@@ -13,10 +13,10 @@ const Home = () => {
 
       <div>
         <div className="grid lg:grid-flow-col grid-flow-row grid-cols-1 lg:grid-cols-12">
-          <div className="col-span-1 lg:col-span-6 border p-2 m-2">
+          <div className="col-span-1 lg:col-span-6 border rounded-md p-2 m-2">
             <BrandList />
           </div>
-          <div className="col-span-1 lg:col-span-6 border p-2 m-2">
+          <div className="col-span-1 lg:col-span-6 border rounded-md p-2 m-2">
             <ProductList />
           </div>
         </div>
