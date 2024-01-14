@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { http } from "../../../api-client";
 import { Brand } from "../../../types/Brand";
 import { queryStaleTime } from "../../../utils";
+import { Link } from "react-router-dom";
 
 const BrandList = () => {
   const { isPending, data: brands } = useQuery({
@@ -28,6 +29,7 @@ const BrandList = () => {
           ))}
         </ul>
       </div>
+      <Link to="/brands">View all brands</Link>
     </div>
   );
 };
