@@ -43,6 +43,8 @@ const AddBrand = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
+      <div className="text-3xl font-semibold my-5">Add brand</div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <label className="form-control w-full">
           <div className="label">
