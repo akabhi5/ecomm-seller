@@ -19,6 +19,17 @@ const BrandList = () => {
     );
   }
 
+  if (brands?.data.length <= 0) {
+    return (
+      <div>
+        <div>No brands to show</div>
+        <Link to="/brands/add" className="text-xs float-right text-slate-600">
+          Add brands
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="text-xl underline">Brands</div>
@@ -29,7 +40,12 @@ const BrandList = () => {
           ))}
         </ul>
       </div>
-      <Link to="/brands">View all brands</Link>
+      <Link
+        to="/brands"
+        className="text-xs float-right text-slate-600 underline"
+      >
+        View all brands
+      </Link>
     </div>
   );
 };
