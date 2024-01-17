@@ -2,17 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { http } from "../../api-client";
 import { queryStaleTime } from "../../utils";
 import { Brand } from "../../types/Brand";
+import { Link } from "react-router-dom";
 
-const BrandsList = () => {
-  const { isPending, data: brands } = useQuery({
+const AllBrands = () => {
+  const { isPending, data: brands } = useQuery<Brand[]>({
     queryKey: ["seller-brands"],
-    queryFn: () => http.get("/brands/"),
+    queryFn: () => http.get("/brands/").then((response) => response.data),
     staleTime: queryStaleTime,
   });
 
   if (isPending) {
     return (
-      <div className="flex justify-center">
+      <div className="flex justify-center items-center h-[70vh]">
         <progress className="progress w-56"></progress>
       </div>
     );
@@ -24,10 +25,14 @@ const BrandsList = () => {
 
       <div>
         <div className="grid grid-cols-5 gap-5">
-          {brands?.data.map((brand: Brand) => (
-            <div key={brand.id} className="border p-3">
+          {brands?.map((brand: Brand) => (
+            <Link
+              to={`/brands/${brand.slug}/edit`}
+              key={brand.id}
+              className="border p-3"
+            >
               <img src={brand.image} />
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -35,4 +40,4 @@ const BrandsList = () => {
   );
 };
 
-export default BrandsList;
+export default AllBrands;

@@ -37,9 +37,9 @@ const AddProduct = () => {
     staleTime: queryStaleTime,
   });
 
-  const { data: brands } = useQuery({
+  const { data: brands } = useQuery<Brand[]>({
     queryKey: ["seller-brands"],
-    queryFn: () => http.get("/brands/"),
+    queryFn: () => http.get("/brands/").then((response) => response.data),
     staleTime: queryStaleTime,
   });
 
@@ -142,7 +142,7 @@ const AddProduct = () => {
             {...register("brand", { required: true })}
             className="select select-bordered w-full"
           >
-            {brands?.data.map((brand: Brand) => (
+            {brands?.map((brand: Brand) => (
               <option key={brand.id} value={brand.id}>
                 {brand.name}
               </option>

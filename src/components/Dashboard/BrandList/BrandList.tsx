@@ -5,9 +5,9 @@ import { queryStaleTime } from "../../../utils";
 import { Link } from "react-router-dom";
 
 const BrandList = () => {
-  const { isPending, data: brands } = useQuery({
+  const { isPending, data: brands } = useQuery<Brand[]>({
     queryKey: ["seller-brands"],
-    queryFn: () => http.get("/brands/"),
+    queryFn: () => http.get("/brands/").then((response) => response.data),
     staleTime: queryStaleTime,
   });
 
@@ -19,7 +19,7 @@ const BrandList = () => {
     );
   }
 
-  if (brands?.data.length <= 0) {
+  if (brands && brands?.length <= 0) {
     return (
       <div>
         <div>No brands to show</div>
@@ -35,7 +35,7 @@ const BrandList = () => {
       <div className="text-xl underline">Brands</div>
       <div>
         <ul>
-          {brands?.data.map((brand: Brand) => (
+          {brands?.map((brand: Brand) => (
             <li key={brand.id}>{brand.name}</li>
           ))}
         </ul>
