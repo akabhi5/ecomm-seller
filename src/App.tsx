@@ -9,7 +9,7 @@ import AddBrand from "./page/Brand/AddBrand/AddBrand";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import AddProduct from "./page/Product/AddProduct/AddProduct";
 import AllBrands from "./page/Brand/AllBrands";
-import Product from "./page/Product/Product";
+import AllProducts from "./page/Product/AllProducts";
 import EditBrand from "./page/Brand/EditBrand/EditBrand";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
               <Route path="brands" element={<AllBrands />} />
               <Route path="brands/:brandSlug/edit" element={<EditBrand />} />
               <Route path="products/add" element={<AddProduct />} />
-              <Route path="products" element={<Product />} />
+              <Route path="products" element={<AllProducts />} />
             </Route>
             <Route path="*" element={<NoPage />} />
           </Routes>

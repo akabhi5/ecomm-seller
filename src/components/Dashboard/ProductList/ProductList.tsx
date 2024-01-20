@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const ProductList = () => {
   const { isPending, data: products } = useQuery({
     queryKey: ["seller-products"],
-    queryFn: () => http.get("/products/"),
+    queryFn: () => http.get("/products/").then((response) => response.data),
     staleTime: queryStaleTime,
   });
 
@@ -19,7 +19,7 @@ const ProductList = () => {
     );
   }
 
-  if (products?.data.length <= 0) {
+  if (products?.length <= 0) {
     return (
       <div>
         <div>No products to show</div>
@@ -38,7 +38,7 @@ const ProductList = () => {
       <div className="text-xl underline">Products</div>
       <div>
         <ul>
-          {products?.data.map((product: Product) => (
+          {products?.map((product: Product) => (
             <li key={product.id}>{product.name}</li>
           ))}
         </ul>

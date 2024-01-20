@@ -4,10 +4,15 @@ export interface Product {
   id: number;
   name: string;
   slug: string;
-  price: number;
+  price: string;
   description: string;
   created_on: string;
   updated_on: string;
-  product_images: string;
+  product_images: ProductImage[];
   category: Category;
+}
+
+export interface ProductImage {
+  id: number;
+  url: string;
 }
