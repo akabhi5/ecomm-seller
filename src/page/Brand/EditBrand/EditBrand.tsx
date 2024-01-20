@@ -65,8 +65,31 @@ const EditBrand = () => {
     },
   });
 
+  const { mutate: deleteBrand, isPending: isDeleting } = useMutation<
+    AxiosResponse,
+    Error,
+    void,
+    unknown
+  >({
+    mutationFn: () => {
+      return http.delete(`/brands/${brandSlug}/`);
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["seller-brands", brandSlug] });
+      toast.success("Brand deleted!", {
+        position: "bottom-right",
+      });
+      navigate("/brands");
+    },
+  });
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     submitEditedBrand(data);
+  };
+
+  const openDeleteModal = () => {
+    (document.getElementById("delete_modal") as HTMLFormElement).showModal();
   };
 
   if (isLoadingBrand) {
@@ -91,7 +114,10 @@ const EditBrand = () => {
           Edit brand: {brand.name}
         </div>
         <div>
-          <button className="btn btn-sm btn-outline text-lg">
+          <button
+            className="btn btn-sm btn-error text-white text-lg"
+            onClick={openDeleteModal}
+          >
             {isPending && <span className="loading loading-spinner"></span>}
             Delete brand
           </button>
@@ -153,6 +179,29 @@ const EditBrand = () => {
           </button>
         </div>
       </form>
+
+      <div>
+        <dialog id="delete_modal" className="modal">
+          <div className="modal-box">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+            </form>
+            <h3 className="font-bold text-lg">Delete brand: {brand.name}</h3>
+            <p className="py-4">Are you sure to delete brand: {brand.name}</p>
+            <p>All products for this brand will also be deleted.</p>
+            <button
+              className="btn btn-sm text-white btn-error float-end"
+              onClick={() => deleteBrand()}
+            >
+              {isDeleting && <span className="loading loading-spinner"></span>}
+              Confirm
+            </button>
+          </div>
+        </dialog>
+      </div>
     </div>
   );
 };
