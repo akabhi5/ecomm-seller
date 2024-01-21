@@ -67,7 +67,7 @@ const AddProduct = () => {
         position: "bottom-right",
       });
       reset();
-      navigate("/");
+      navigate("/products");
     },
   });
 

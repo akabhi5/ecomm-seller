@@ -75,6 +75,27 @@ const EditProduct = () => {
     },
   });
 
+  const { mutate: deleteProduct, isPending: isDeleting } = useMutation<
+    AxiosResponse,
+    Error,
+    void,
+    unknown
+  >({
+    mutationFn: () => {
+      return http.delete(`/products/${productSlug}/`);
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({
+        queryKey: ["seller-products"],
+      });
+      toast.success("Product deleted!", {
+        position: "bottom-right",
+      });
+      navigate("/products");
+    },
+  });
+
   useEffect(() => {
     if (isSuccess) {
       setValue("name", product.name);
@@ -94,6 +115,10 @@ const EditProduct = () => {
     submitEditedProduct(data);
   };
 
+  const openDeleteModal = () => {
+    (document.getElementById("delete_modal") as HTMLFormElement).showModal();
+  };
+
   if (isLoadingProduct) {
     return (
       <MoveToCentre>
@@ -111,8 +136,18 @@ const EditProduct = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="text-3xl font-semibold my-5">
-        Edit product: {product.name}
+      <div className="flex items-center justify-between">
+        <div className="text-3xl font-semibold my-5">
+          Edit brand: {product.name}
+        </div>
+        <div>
+          <button
+            className="btn btn-sm btn-error text-white text-lg"
+            onClick={openDeleteModal}
+          >
+            Delete product
+          </button>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -221,6 +256,33 @@ const EditProduct = () => {
           </button>
         </div>
       </form>
+
+      <div>
+        <dialog id="delete_modal" className="modal">
+          <div className="modal-box">
+            <form method="dialog">
+              {/* if there is a button in form, it will close the modal */}
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+            </form>
+            <h3 className="font-bold text-lg">
+              Delete product: {product.name}
+            </h3>
+            <p className="py-4">
+              Are you sure to delete product: {product.name}
+            </p>
+
+            <button
+              className="btn btn-sm text-white btn-error float-end"
+              onClick={() => deleteProduct()}
+            >
+              {isDeleting && <span className="loading loading-spinner"></span>}
+              Confirm
+            </button>
+          </div>
+        </dialog>
+      </div>
     </div>
   );
 };

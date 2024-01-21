@@ -76,7 +76,7 @@ const EditBrand = () => {
     },
     onSuccess: () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["seller-brands", brandSlug] });
+      queryClient.invalidateQueries({ queryKey: ["seller-brands"] });
       toast.success("Brand deleted!", {
         position: "bottom-right",
       });
@@ -118,7 +118,6 @@ const EditBrand = () => {
             className="btn btn-sm btn-error text-white text-lg"
             onClick={openDeleteModal}
           >
-            {isPending && <span className="loading loading-spinner"></span>}
             Delete brand
           </button>
         </div>

@@ -33,7 +33,7 @@ const AddBrand = () => {
         position: "bottom-right",
       });
       reset();
-      navigate("/");
+      navigate("/brands");
     },
   });
 
