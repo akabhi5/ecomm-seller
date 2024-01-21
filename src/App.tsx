@@ -11,6 +11,7 @@ import AddProduct from "./page/Product/AddProduct/AddProduct";
 import AllBrands from "./page/Brand/AllBrands";
 import AllProducts from "./page/Product/AllProducts";
 import EditBrand from "./page/Brand/EditBrand/EditBrand";
+import EditProduct from "./page/Product/EditProduct/EditProduct";
 
 function App() {
   return (
@@ -26,6 +27,10 @@ function App() {
               <Route path="brands" element={<AllBrands />} />
               <Route path="brands/:brandSlug/edit" element={<EditBrand />} />
               <Route path="products/add" element={<AddProduct />} />
+              <Route
+                path="products/:productSlug/edit"
+                element={<EditProduct />}
+              />
               <Route path="products" element={<AllProducts />} />
             </Route>
             <Route path="*" element={<NoPage />} />

@@ -4,6 +4,7 @@ import { queryStaleTime } from "../../utils";
 import { Product } from "../../types/Product";
 import MoveToCentre from "../../components/MoveToCentre/MoveToCentre";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import { Link } from "react-router-dom";
 
 const AllProducts = () => {
   const { isPending, data: products } = useQuery<Product[]>({
@@ -24,7 +25,9 @@ const AllProducts = () => {
     <div className="max-w-7xl mx-auto">
       <div className="grid grid-cols-5 gap-4">
         {products?.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <Link key={product.id} to={`/products/${product.slug}/edit`}>
+            <ProductCard product={product} />
+          </Link>
         ))}
       </div>
     </div>

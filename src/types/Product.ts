@@ -10,6 +10,7 @@ export interface Product {
   updated_on: string;
   product_images: ProductImage[];
   category: Category;
+  brand: number;
 }
 
 export interface ProductImage {
