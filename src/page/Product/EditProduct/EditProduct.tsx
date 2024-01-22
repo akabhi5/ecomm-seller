@@ -65,7 +65,7 @@ const EditProduct = () => {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["seller-products", productSlug],
+        queryKey: ["seller-products"],
       });
       toast.success("Product edited!", {
         position: "bottom-right",
@@ -112,6 +112,8 @@ const EditProduct = () => {
   }, [isSuccess]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+
     submitEditedProduct(data);
   };
 
