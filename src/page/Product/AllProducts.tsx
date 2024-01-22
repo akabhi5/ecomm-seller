@@ -70,7 +70,7 @@ const AllProducts = () => {
           <select
             defaultValue={selectedBrand}
             onChange={onChangeBrandSelect}
-            className="select select-sm select-bordered"
+            className="select select-sm select-bordered w-44"
           >
             <option value={defaultBrandName}>All</option>
             {brands?.map((brand) => (
@@ -81,7 +81,7 @@ const AllProducts = () => {
           </select>
         </label>
       </div>
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {productList?.map((product) => (
           <Link key={product.id} to={`/products/${product.slug}/edit`}>
             <ProductCard product={product} />
