@@ -6,3 +6,8 @@ export interface Brand {
   slug: string;
   seller: number;
 }
+
+export interface ProductBrand {
+  id: number;
+  name: string;
+}

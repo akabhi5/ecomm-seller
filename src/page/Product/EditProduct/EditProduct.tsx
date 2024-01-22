@@ -106,7 +106,7 @@ const EditProduct = () => {
         "images",
         product.product_images.map((image) => image.url).join(";")
       );
-      setValue("brand", product.brand);
+      setValue("brand", product.brand.id);
       setValue("description", product.description);
     }
   }, [isSuccess]);

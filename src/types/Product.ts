@@ -1,3 +1,4 @@
+import { ProductBrand } from "./Brand";
 import { Category } from "./Category";
 
 export interface Product {
@@ -10,7 +11,7 @@ export interface Product {
   updated_on: string;
   product_images: ProductImage[];
   category: Category;
-  brand: number;
+  brand: ProductBrand;
 }
 
 export interface ProductImage {

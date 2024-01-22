@@ -4,15 +4,16 @@ import { queryStaleTime } from "../../utils";
 import { Product } from "../../types/Product";
 import MoveToCentre from "../../components/MoveToCentre/MoveToCentre";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Brand } from "../../types/Brand";
 import { useEffect, useState } from "react";
 
-const defaultBrandName = 0;
+const defaultBrandName = "all";
 
 const AllProducts = () => {
-  const [selectedBrand, setSelectedBrand] = useState<number>(defaultBrandName);
+  const [selectedBrand, setSelectedBrand] = useState<string>(defaultBrandName);
   const [productList, setProductList] = useState<Product[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { isPending, data: products } = useQuery<Product[]>({
     queryKey: ["seller-products"],
@@ -27,18 +28,28 @@ const AllProducts = () => {
   });
 
   useEffect(() => {
+    const brandFromLink = searchParams.get("brand");
+    if (brandFromLink) setSelectedBrand(brandFromLink);
+
     let filteredProducts;
     if (selectedBrand === defaultBrandName) {
       filteredProducts = products ? [...products] : [];
     } else {
       filteredProducts =
-        products?.filter((product) => product.brand === selectedBrand) ?? [];
+        products?.filter((product) => product.brand.name === selectedBrand) ??
+        [];
     }
     setProductList(filteredProducts);
   }, [selectedBrand, products]);
 
   const onChangeBrandSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedBrand(parseInt(e.target.value));
+    const value = e.target.value;
+    setSelectedBrand(value);
+    if (value == defaultBrandName) {
+      setSearchParams();
+    } else {
+      setSearchParams({ brand: value });
+    }
   };
 
   if (isPending) {
@@ -57,13 +68,13 @@ const AllProducts = () => {
             <span className="label-text">Select brand</span>
           </div>
           <select
-            defaultValue={defaultBrandName}
+            defaultValue={selectedBrand}
             onChange={onChangeBrandSelect}
             className="select select-sm select-bordered"
           >
             <option value={defaultBrandName}>All</option>
             {brands?.map((brand) => (
-              <option key={brand.id} value={brand.id}>
+              <option key={brand.id} value={brand.name}>
                 {brand.name}
               </option>
             ))}
