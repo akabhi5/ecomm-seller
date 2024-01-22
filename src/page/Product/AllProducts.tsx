@@ -5,13 +5,41 @@ import { Product } from "../../types/Product";
 import MoveToCentre from "../../components/MoveToCentre/MoveToCentre";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { Link } from "react-router-dom";
+import { Brand } from "../../types/Brand";
+import { useEffect, useState } from "react";
+
+const defaultBrandName = 0;
 
 const AllProducts = () => {
+  const [selectedBrand, setSelectedBrand] = useState<number>(defaultBrandName);
+  const [productList, setProductList] = useState<Product[]>([]);
+
   const { isPending, data: products } = useQuery<Product[]>({
     queryKey: ["seller-products"],
     queryFn: () => http.get("/products/").then((response) => response.data),
     staleTime: queryStaleTime,
   });
+
+  const { data: brands } = useQuery<Brand[]>({
+    queryKey: ["seller-brands"],
+    queryFn: () => http.get("/brands/").then((response) => response.data),
+    staleTime: queryStaleTime,
+  });
+
+  useEffect(() => {
+    let filteredProducts;
+    if (selectedBrand === defaultBrandName) {
+      filteredProducts = products ? [...products] : [];
+    } else {
+      filteredProducts =
+        products?.filter((product) => product.brand === selectedBrand) ?? [];
+    }
+    setProductList(filteredProducts);
+  }, [selectedBrand, products]);
+
+  const onChangeBrandSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedBrand(parseInt(e.target.value));
+  };
 
   if (isPending) {
     return (
@@ -22,9 +50,28 @@ const AllProducts = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto space-y-5">
+      <div className="flex space-x-5">
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text">Select brand</span>
+          </div>
+          <select
+            defaultValue={defaultBrandName}
+            onChange={onChangeBrandSelect}
+            className="select select-sm select-bordered"
+          >
+            <option value={defaultBrandName}>All</option>
+            {brands?.map((brand) => (
+              <option key={brand.id} value={brand.id}>
+                {brand.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
       <div className="grid grid-cols-5 gap-4">
-        {products?.map((product) => (
+        {productList?.map((product) => (
           <Link key={product.id} to={`/products/${product.slug}/edit`}>
             <ProductCard product={product} />
           </Link>
