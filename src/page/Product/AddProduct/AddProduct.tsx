@@ -51,7 +51,7 @@ const AddProduct = () => {
         category: newProduct.category,
         brand: newProduct.brand,
       };
-      return http.post("/products/", product);
+      return http.post("/products/", product).then((response) => response.data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["seller-products"] });
@@ -60,6 +60,11 @@ const AddProduct = () => {
       });
       reset();
       navigate("/products");
+    },
+    onError: () => {
+      toast.error("Some error occurred. Try again!", {
+        position: "bottom-right",
+      });
     },
   });
 

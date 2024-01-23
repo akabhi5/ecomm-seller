@@ -24,7 +24,7 @@ const AddBrand = () => {
     unknown
   >({
     mutationFn: (newBrand) => {
-      return http.post("/brands/", newBrand);
+      return http.post("/brands/", newBrand).then((response) => response.data);
     },
     onSuccess: () => {
       // Invalidate and refetch
@@ -34,6 +34,11 @@ const AddBrand = () => {
       });
       reset();
       navigate("/brands");
+    },
+    onError: () => {
+      toast.error("Some error occurred. Try again!", {
+        position: "bottom-right",
+      });
     },
   });
 
