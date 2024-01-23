@@ -6,7 +6,7 @@ import { http, httpNoAuth } from "../../../api-client";
 import { AxiosResponse } from "axios";
 import { Category } from "../../../types/Category";
 import { Brand } from "../../../types/Brand";
-import { queryStaleTime } from "../../../utils";
+import { createArrayOfObjects, queryStaleTime } from "../../../utils";
 
 type Inputs = {
   name: string;
@@ -17,14 +17,6 @@ type Inputs = {
   category: number;
   brand: number;
 };
-
-function createArrayOfObjects(urlsString: string): { url: string }[] {
-  const urls: string[] = urlsString.split(";").filter(Boolean); // Split string by ';' and remove empty strings
-
-  const arrayOfObjects: { url: string }[] = urls.map((url) => ({ url }));
-
-  return arrayOfObjects;
-}
 
 const AddProduct = () => {
   const { register, handleSubmit, reset } = useForm<Inputs>();

@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { http, httpNoAuth } from "../../../api-client";
-import { queryStaleTime } from "../../../utils";
+import { createArrayOfObjects, queryStaleTime } from "../../../utils";
 import MoveToCentre from "../../../components/MoveToCentre/MoveToCentre";
 import { Product } from "../../../types/Product";
 import { AxiosResponse } from "axios";
@@ -60,7 +60,16 @@ const EditProduct = () => {
     unknown
   >({
     mutationFn: (updatedProduct) => {
-      return http.patch(`/products/${productSlug}/`, updatedProduct);
+      const product = {
+        name: updatedProduct.name,
+        slug: updatedProduct.slug,
+        price: updatedProduct.price.toString(),
+        description: updatedProduct.description,
+        product_images: createArrayOfObjects(updatedProduct.images),
+        category: updatedProduct.category,
+        brand: updatedProduct.brand,
+      };
+      return http.patch(`/products/${productSlug}/`, product);
     },
     onSuccess: () => {
       // Invalidate and refetch
@@ -112,8 +121,6 @@ const EditProduct = () => {
   }, [isSuccess]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-
     submitEditedProduct(data);
   };
 
