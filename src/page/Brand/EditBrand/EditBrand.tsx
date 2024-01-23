@@ -52,7 +52,9 @@ const EditBrand = () => {
     unknown
   >({
     mutationFn: (updatedBrand) => {
-      return http.patch(`/brands/${brandSlug}/`, updatedBrand);
+      return http
+        .patch(`/brands/${brandSlug}/`, updatedBrand)
+        .then((response) => response.data);
     },
     onSuccess: () => {
       // Invalidate and refetch
@@ -63,6 +65,11 @@ const EditBrand = () => {
       reset();
       navigate("/brands");
     },
+    onError: () => {
+      toast.error("Some error occurred. Try again!", {
+        position: "bottom-right",
+      });
+    },
   });
 
   const { mutate: deleteBrand, isPending: isDeleting } = useMutation<
@@ -72,7 +79,9 @@ const EditBrand = () => {
     unknown
   >({
     mutationFn: () => {
-      return http.delete(`/brands/${brandSlug}/`);
+      return http
+        .delete(`/brands/${brandSlug}/`)
+        .then((response) => response.data);
     },
     onSuccess: () => {
       // Invalidate and refetch
@@ -81,6 +90,11 @@ const EditBrand = () => {
         position: "bottom-right",
       });
       navigate("/brands");
+    },
+    onError: () => {
+      toast.error("Some error occurred. Try again!", {
+        position: "bottom-right",
+      });
     },
   });
 

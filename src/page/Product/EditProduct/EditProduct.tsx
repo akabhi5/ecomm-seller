@@ -69,7 +69,9 @@ const EditProduct = () => {
         category: updatedProduct.category,
         brand: updatedProduct.brand,
       };
-      return http.patch(`/products/${productSlug}/`, product);
+      return http
+        .patch(`/products/${productSlug}/`, product)
+        .then((response) => response.data);
     },
     onSuccess: () => {
       // Invalidate and refetch
@@ -82,6 +84,11 @@ const EditProduct = () => {
       reset();
       navigate("/products");
     },
+    onError: () => {
+      toast.error("Some error occurred. Try again!", {
+        position: "bottom-right",
+      });
+    },
   });
 
   const { mutate: deleteProduct, isPending: isDeleting } = useMutation<
@@ -91,7 +98,9 @@ const EditProduct = () => {
     unknown
   >({
     mutationFn: () => {
-      return http.delete(`/products/${productSlug}/`);
+      return http
+        .delete(`/products/${productSlug}/`)
+        .then((response) => response.data);
     },
     onSuccess: () => {
       // Invalidate and refetch
@@ -102,6 +111,11 @@ const EditProduct = () => {
         position: "bottom-right",
       });
       navigate("/products");
+    },
+    onError: () => {
+      toast.error("Some error occurred. Try again!", {
+        position: "bottom-right",
+      });
     },
   });
 

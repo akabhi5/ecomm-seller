@@ -19,7 +19,7 @@ type Inputs = {
 };
 
 const AddProduct = () => {
-  const { register, handleSubmit, reset } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -58,7 +58,6 @@ const AddProduct = () => {
       toast.success("Product added!", {
         position: "bottom-right",
       });
-      reset();
       navigate("/products");
     },
     onError: () => {
