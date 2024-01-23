@@ -1,10 +1,12 @@
 import { FaReact } from "react-icons/fa";
 import {
   SiAxios,
+  SiDaisyui,
   SiReacthookform,
   SiReactquery,
   SiReactrouter,
   SiRedux,
+  SiTailwindcss,
   SiVite,
 } from "react-icons/si";
 
@@ -35,6 +37,12 @@ const Footer = () => {
           </div>
           <div className="tooltip" data-tip="Axios">
             <SiAxios size={40} />
+          </div>
+          <div className="tooltip" data-tip="TailwindCSS">
+            <SiTailwindcss size={40} />
+          </div>
+          <div className="tooltip" data-tip="DaisyUI">
+            <SiDaisyui size={50} />
           </div>
         </div>
       </aside>
