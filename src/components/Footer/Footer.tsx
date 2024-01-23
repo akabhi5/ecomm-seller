@@ -1,5 +1,6 @@
 import { FaReact } from "react-icons/fa";
 import {
+  SiAxios,
   SiReacthookform,
   SiReactquery,
   SiReactrouter,
@@ -31,6 +32,9 @@ const Footer = () => {
           </div>
           <div className="tooltip" data-tip="React Router DOM">
             <SiReactrouter size={50} />
+          </div>
+          <div className="tooltip" data-tip="Axios">
+            <SiAxios size={40} />
           </div>
         </div>
       </aside>
