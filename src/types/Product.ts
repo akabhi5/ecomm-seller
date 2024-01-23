@@ -12,9 +12,19 @@ export interface Product {
   product_images: ProductImage[];
   category: Category;
   brand: ProductBrand;
+  size_quantity: SizeQuantity;
 }
 
 export interface ProductImage {
   id: number;
   url: string;
+}
+
+export interface SizeQuantity {
+  id: number;
+  xs: number;
+  s: number;
+  m: number;
+  l: number;
+  xl: number;
 }

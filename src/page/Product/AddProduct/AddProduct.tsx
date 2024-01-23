@@ -6,7 +6,14 @@ import { http, httpNoAuth } from "../../../api-client";
 import { AxiosResponse } from "axios";
 import { Category } from "../../../types/Category";
 import { Brand } from "../../../types/Brand";
-import { createArrayOfObjects, queryStaleTime } from "../../../utils";
+import {
+  MAX_QUANTITY,
+  MAX_QUANTITY_ERR_MSG,
+  MIN_QUANTITY,
+  MIN_QUANTITY_ERR_MSG,
+  createArrayOfObjects,
+  queryStaleTime,
+} from "../../../utils";
 
 type Inputs = {
   name: string;
@@ -16,10 +23,19 @@ type Inputs = {
   images: string;
   category: number;
   brand: number;
+  xs: number;
+  s: number;
+  m: number;
+  l: number;
+  xl: number;
 };
 
 const AddProduct = () => {
-  const { register, handleSubmit } = useForm<Inputs>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -50,6 +66,13 @@ const AddProduct = () => {
         product_images: createArrayOfObjects(newProduct.images),
         category: newProduct.category,
         brand: newProduct.brand,
+        size_quantity: {
+          xs: newProduct.xs,
+          s: newProduct.s,
+          m: newProduct.m,
+          l: newProduct.l,
+          xl: newProduct.xl,
+        },
       };
       return http.post("/products/", product).then((response) => response.data);
     },
@@ -173,6 +196,94 @@ const AddProduct = () => {
             {...register("description", { required: true })}
           ></textarea>
         </label>
+
+        <div className="my-2">
+          <div className="label">Size and quantity</div>
+          <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                XS
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("xs", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                S
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("s", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                M
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("m", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                L
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("l", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                XL
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("xl", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-red-600">{errors.xs?.message}</span>
+            <span className="text-xs text-red-600">{errors.s?.message}</span>
+            <span className="text-xs text-red-600">{errors.m?.message}</span>
+            <span className="text-xs text-red-600">{errors.l?.message}</span>
+            <span className="text-xs text-red-600">{errors.xl?.message}</span>
+          </div>
+        </div>
 
         <div className="mt-4">
           <button className="btn btn-neutral text-lg">

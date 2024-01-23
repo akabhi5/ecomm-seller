@@ -2,7 +2,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { http, httpNoAuth } from "../../../api-client";
-import { createArrayOfObjects, queryStaleTime } from "../../../utils";
+import {
+  MAX_QUANTITY,
+  MAX_QUANTITY_ERR_MSG,
+  MIN_QUANTITY,
+  MIN_QUANTITY_ERR_MSG,
+  createArrayOfObjects,
+  queryStaleTime,
+} from "../../../utils";
 import MoveToCentre from "../../../components/MoveToCentre/MoveToCentre";
 import { Product } from "../../../types/Product";
 import { AxiosResponse } from "axios";
@@ -19,10 +26,21 @@ type Inputs = {
   images: string;
   category: number;
   brand: number;
+  xs: number;
+  s: number;
+  m: number;
+  l: number;
+  xl: number;
 };
 
 const EditProduct = () => {
-  const { register, handleSubmit, reset, setValue } = useForm<Inputs>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<Inputs>();
   const navigate = useNavigate();
   const params = useParams();
   const queryClient = useQueryClient();
@@ -68,6 +86,13 @@ const EditProduct = () => {
         product_images: createArrayOfObjects(updatedProduct.images),
         category: updatedProduct.category,
         brand: updatedProduct.brand,
+        size_quantity: {
+          xs: updatedProduct.xs,
+          s: updatedProduct.s,
+          m: updatedProduct.m,
+          l: updatedProduct.l,
+          xl: updatedProduct.xl,
+        },
       };
       return http
         .patch(`/products/${productSlug}/`, product)
@@ -131,6 +156,11 @@ const EditProduct = () => {
       );
       setValue("brand", product.brand.id);
       setValue("description", product.description);
+      setValue("xs", product.size_quantity.xs);
+      setValue("s", product.size_quantity.s);
+      setValue("m", product.size_quantity.m);
+      setValue("l", product.size_quantity.l);
+      setValue("xl", product.size_quantity.xl);
     }
   }, [isSuccess]);
 
@@ -271,6 +301,94 @@ const EditProduct = () => {
             {...register("description", { required: true })}
           ></textarea>
         </label>
+
+        <div className="my-2">
+          <div className="label">Size and quantity</div>
+          <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                XS
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("xs", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                S
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("s", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                M
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("m", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                L
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("l", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+            <div className="flex rounded-lg shadow-sm">
+              <span className="px-4 inline-flex items-center min-w-fit rounded-s-md border border-e-0 border-gray-200 bg-gray-50 text-sm text-gray-500">
+                XL
+              </span>
+              <input
+                type="number"
+                defaultValue={0}
+                className="py-2 px-3 block w-full border-gray-200 shadow-sm rounded-e-lg text-sm focus:z-10 disabled:opacity-50 disabled:pointer-events-none border-2 focus:outline-none"
+                {...register("xl", {
+                  required: true,
+                  min: { value: MIN_QUANTITY, message: MIN_QUANTITY_ERR_MSG },
+                  max: { value: MAX_QUANTITY, message: MAX_QUANTITY_ERR_MSG },
+                })}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-red-600">{errors.xs?.message}</span>
+            <span className="text-xs text-red-600">{errors.s?.message}</span>
+            <span className="text-xs text-red-600">{errors.m?.message}</span>
+            <span className="text-xs text-red-600">{errors.l?.message}</span>
+            <span className="text-xs text-red-600">{errors.xl?.message}</span>
+          </div>
+        </div>
 
         <div className="mt-4">
           <button className="btn btn-neutral text-lg">
