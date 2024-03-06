@@ -27,7 +27,7 @@ const Editor = ({ setContent, initialContent = "" }: IPropType) => {
         plugins: plugins,
         toolbar_sticky: true,
         toolbar_sticky_offset: isSmallScreen ? 0 : 0,
-        content_style: "body { line-height: 0.5; }",
+        content_style: "body { line-height: 1; }",
         image_class_list: [
           { title: "Banner image", value: "banner-image" },
           { title: "Other", value: "other-image" },
