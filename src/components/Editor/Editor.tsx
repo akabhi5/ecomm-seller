@@ -1,4 +1,5 @@
 import { Editor as TinyEditor } from "@tinymce/tinymce-react";
+import { plugins, toolbars } from "./options";
 
 interface IPropType {
   setContent: (content: string) => void;
@@ -22,9 +23,11 @@ const Editor = ({ setContent, initialContent = "" }: IPropType) => {
       init={{
         height: 300,
         menubar: false,
+        toolbar: toolbars,
+        plugins: plugins,
         toolbar_sticky: true,
         toolbar_sticky_offset: isSmallScreen ? 0 : 0,
-        content_style: "body { line-height: 1; }",
+        content_style: "body { line-height: 0.5; }",
         image_class_list: [
           { title: "Banner image", value: "banner-image" },
           { title: "Other", value: "other-image" },
