@@ -14,6 +14,7 @@ import {
   createArrayOfObjects,
   queryStaleTime,
 } from "../../../utils";
+import Editor from "../../../components/Editor/Editor";
 
 type Inputs = {
   name: string;
@@ -35,6 +36,7 @@ const AddProduct = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<Inputs>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -50,6 +52,10 @@ const AddProduct = () => {
     queryFn: () => http.get("/brands/").then((response) => response.data),
     staleTime: queryStaleTime,
   });
+
+  const setContent = (data: string) => {
+    setValue("description", data);
+  };
 
   const { mutate: addNewProduct, isPending } = useMutation<
     AxiosResponse,
@@ -190,12 +196,10 @@ const AddProduct = () => {
           <div className="label">
             <span className="label-text text-lg">Description</span>
           </div>
-          <textarea
-            className="textarea textarea-bordered h-24 text-base"
-            placeholder="Description"
-            {...register("description", { required: true })}
-          ></textarea>
         </label>
+        <div>
+          <Editor setContent={setContent} />
+        </div>
 
         <div className="my-2">
           <div className="label">Size and quantity</div>

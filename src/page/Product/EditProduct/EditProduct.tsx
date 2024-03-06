@@ -17,6 +17,7 @@ import toast from "react-hot-toast";
 import { Category } from "../../../types/Category";
 import { Brand } from "../../../types/Brand";
 import { useEffect } from "react";
+import Editor from "../../../components/Editor/Editor";
 
 type Inputs = {
   name: string;
@@ -70,6 +71,10 @@ const EditProduct = () => {
     queryFn: () => httpNoAuth.get("/products/category/"),
     staleTime: queryStaleTime,
   });
+
+  const setContent = (data: string) => {
+    setValue("description", data);
+  };
 
   const { mutate: submitEditedProduct, isPending } = useMutation<
     AxiosResponse,
@@ -295,12 +300,13 @@ const EditProduct = () => {
           <div className="label">
             <span className="label-text text-lg">Description</span>
           </div>
-          <textarea
-            className="textarea textarea-bordered h-24 text-base"
-            placeholder="Description"
-            {...register("description", { required: true })}
-          ></textarea>
         </label>
+        <div>
+          <Editor
+            setContent={setContent}
+            initialContent={product.description}
+          />
+        </div>
 
         <div className="my-2">
           <div className="label">Size and quantity</div>
