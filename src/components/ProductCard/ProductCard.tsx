@@ -8,7 +8,7 @@ const ProductCard = ({ product }: Props) => {
   return (
     <div className="hover:shadow-md max-w-[220px] h-full border">
       <img
-        className="w-fit max-h-[250px] min-w-[200px] min-h-[250px] object-cover"
+        className="w-fit max-h-[250px] min-w-full min-h-[250px] object-cover"
         src={product.product_images[0].url}
         alt={product.name}
       />
