@@ -10,9 +10,5 @@ export const plugins = `preview
   lists `;
 
 export const toolbars = `undo redo | 
-  bold italic underline strikethrough | 
-  blocks | 
-  alignleft aligncenter alignright alignjustify | 
-  outdent indent | 
-  numlist bullist | 
+  bold italic underline strikethrough 
 `;
